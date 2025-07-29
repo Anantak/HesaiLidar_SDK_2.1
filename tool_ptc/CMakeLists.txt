@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.5)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 project(CommonModules)
 
 
@@ -62,7 +62,7 @@ endif()
             ${OPENSSL_LIBRARIES})
     endif(WITH_PTCS_USE)
     set_target_properties(ptcClient_lib 
-        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 14)
+        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 17)
     target_include_directories(ptcClient_lib PUBLIC   
         ../libhesai/PtcClient/include
         ../libhesai/PtcParser/include
@@ -84,7 +84,7 @@ add_library(platutils_lib
 target_link_libraries(platutils_lib
     log_lib)
 set_target_properties(platutils_lib
-    PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 14)
+    PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 17)
 target_include_directories(platutils_lib PUBLIC   
     ../libhesai/Common/include
 )
@@ -94,7 +94,7 @@ add_library(log_lib
 target_link_libraries(log_lib
     ${CMAKE_THREAD_LIBS_INIT})
 set_target_properties(log_lib
-    PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 14)
+    PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 17)
 target_include_directories(log_lib PUBLIC   
     ../libhesai/Logger/include
 )

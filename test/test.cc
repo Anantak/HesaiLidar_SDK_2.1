@@ -1,8 +1,8 @@
 #include "hesai_lidar_sdk.hpp"
 
-// #define LIDAR_PARSER_TEST
+#define LIDAR_PARSER_TEST
 // #define SERIAL_PARSER_TEST
-#define PCAP_PARSER_TEST
+// #define PCAP_PARSER_TEST
 // #define EXTERNAL_INPUT_PARSER_TEST
 
 uint32_t last_frame_time = 0;
@@ -21,7 +21,7 @@ void lidarCallback(const LidarDecodedFrame<LidarPointXYZICRT>  &frame) {
 
 void faultMessageCallback(const FaultMessageInfo& fault_message_info) {
   // Use fault message messages to make some judgments
-  // fault_message_info.Print();
+  fault_message_info.Print();
   return;
 }
 

@@ -153,7 +153,7 @@ struct FaultMessageInfo4_10 {
     faultmessagePrint("data_indicator: %u\n", data_indicator);
     faultmessagePrint("internal_temperature: %d\n", internal_temperature);
     faultmessagePrint("blockage_intensity: %u\n", blockage_intensity);
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < 8; i++) {
       faultmessagePrint("%d: blockage_flag[%u],average_energy[%u]\n", i, time_division_multiplexing[i].blockage_flag, time_division_multiplexing[i].average_energy);
     }
     faultmessagePrint("serial_number: %lu\n", serial_number);

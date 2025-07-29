@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.5)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 project(CommonModules)
 if(POLICY CMP0074)
 cmake_policy(SET CMP0074 NEW)
@@ -22,7 +22,7 @@ if(${CUDA_FOUND})
 	include_directories(${CUDA_INCLUDE_DIRS})
 	set(CUDA_PROPAGATE_HOST_FLAGS OFF)
     # set(CMAKE_CUDA_ARCHITECTURES "Auto")  
-	set(CUDA_NVCC_FLAGS -arch=sm_61;-O3;-G;-g;-std=c++14)#根据具体GPU性能更改算力参数
+	set(CUDA_NVCC_FLAGS -arch=sm_${CUDA_ARCH_NUMBER};-O3;-G;-g;-std=c++17)
 	link_directories($ENV{CUDA_PATH}/lib/x64)
     set(WITH_UDPPARSERGPU ON CACHE BOOL "Build UdpParserGpu code")
 else(${CUDA_FOUND})
@@ -76,7 +76,7 @@ if(WITH_UDPPARSER)
                         log_lib
                         platutils_lib)
     set_target_properties(udpParser_lib 
-        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 14)
+        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 17)
     target_include_directories(udpParser_lib PUBLIC   
         UdpProtocol
         UdpParser/include
@@ -132,7 +132,7 @@ endif()
             ${OPENSSL_LIBRARIES})
     endif(WITH_PTCS_USE)
     set_target_properties(ptcClient_lib 
-        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 14)
+        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 17)
     target_include_directories(ptcClient_lib PUBLIC   
         PtcClient/include
         PtcParser/include
@@ -155,7 +155,7 @@ if(WITH_LIDARBOARD)
     target_link_libraries(source_lib
         platutils_lib)
     set_target_properties(source_lib
-        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 14)
+        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 17)
     target_include_directories(source_lib PUBLIC   
         Source/include
         Container/include
@@ -168,7 +168,7 @@ if(WITH_LIDARBOARD)
         target_link_libraries(serialClient_lib
             source_lib)
         set_target_properties(serialClient_lib 
-            PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 14)  
+            PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 17)  
         target_include_directories(serialClient_lib PUBLIC   
             SerialClient/include
         ) 
@@ -182,7 +182,7 @@ add_library(platutils_lib
 target_link_libraries(platutils_lib
     log_lib)
 set_target_properties(platutils_lib
-    PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 14)
+    PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 17)
 target_include_directories(platutils_lib PUBLIC   
     Common/include
 )
@@ -192,7 +192,7 @@ add_library(log_lib SHARED
 target_link_libraries(log_lib
     ${CMAKE_THREAD_LIBS_INIT})
 set_target_properties(log_lib
-    PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 14)
+    PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 17)
 target_include_directories(log_lib PUBLIC   
     Logger/include
 )
@@ -214,7 +214,7 @@ if (WITH_LIDARLIB)
             udpParserGpu_lib)
     endif(WITH_UDPPARSERGPU)
     set_target_properties(lidar_lib
-        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 14)
+        PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 17)
     target_include_directories(lidar_lib PUBLIC   
         Lidar
         ./

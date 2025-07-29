@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.8.11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 PROJECT(SDKTool)
 
 cmake_policy(SET CMP0053 NEW)
@@ -22,7 +22,7 @@ if(${CUDA_FOUND})
 	set(CUDA_SEPARABLE_COMPILATION ON)
 	include_directories(${CUDA_INCLUDE_DIRS})
 	set(CUDA_PROPAGATE_HOST_FLAGS OFF)
-	set(CUDA_NVCC_FLAGS -arch=sm_61;-O3;-G;-g;-std=c++14)#根据具体GPU性能更改算力参数
+	set(CUDA_NVCC_FLAGS -arch=sm_${CUDA_ARCH_NUMBER};-O3;-G;-g;-std=c++17)
 	link_directories($ENV{CUDA_PATH}/lib/x64)
 
   add_definitions(-DUSE_CUDA)
