@@ -60,16 +60,31 @@ inline bool IsLittleEndian() {
   else return false;
 }  
 
-template<typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>  
-inline T reverseBytes(T value) {  
-    if (sizeof(T) == 1) return value;
-    T reversed = 0;  
-    for (size_t i = 0; i < sizeof(T); ++i) {  
-        reversed = (reversed << 8) | (static_cast<unsigned char>(value) & 0xFF);  
-        value >>= 8;  
-    }  
-    return reversed;  
-}  
+// template<typename T, 
+//          std::enable_if_t<std::is_integral<T>::value, int> = 0>  
+// inline T reverseBytes(T value) {  
+//     if (sizeof(T) == 1) return value;
+//     T reversed = 0;  
+//     for (size_t i = 0; i < sizeof(T); ++i) {  
+//         reversed = (reversed << 8) | (static_cast<unsigned char>(value) & 0xFF);  
+//         value >>= 8;  
+//     }  
+//     return reversed;  
+// }  
+
+template<typename T,
+         typename std::enable_if<std::is_integral<T>::value, int>::type = 0>
+inline T reverseBytes(T value) {
+    if (sizeof(T) == 1) {
+        return value;
+    }
+    T reversed = 0;
+    for (size_t i = 0; i < sizeof(T); ++i) {
+        reversed = (reversed << 8) | (static_cast<unsigned char>(value) & 0xFF);
+        value >>= 8;
+    }
+    return reversed;
+}
 
 template <typename T>
 T little_to_native(T data) {
