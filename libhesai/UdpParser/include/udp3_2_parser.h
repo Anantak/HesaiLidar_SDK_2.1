@@ -59,7 +59,7 @@ class Udp3_2Parser : public GeneralParser<T_Point> {
   virtual void* getStruct(const int type);
 
   // get lidar correction file from local file,and pass to udp parser 
-  int LoadChannelConfigFile(const std::string& channel_config_path);
+  int LoadChannelConfigFile(const std::string channel_config_path);
   int LoadChannelConfigString(char *channel_config_content);
   virtual void setFrameRightMemorySpace(LidarDecodedFrame<T_Point> &frame);
  private:

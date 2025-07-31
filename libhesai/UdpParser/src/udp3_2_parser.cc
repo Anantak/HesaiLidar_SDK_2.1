@@ -188,7 +188,7 @@ int Udp3_2Parser<T_Point>::LoadChannelConfigString(char *channel_config_content)
   return 0;
 }
 template<typename T_Point>
-int Udp3_2Parser<T_Point>::LoadChannelConfigFile(const std::string& channel_config_path) {
+int Udp3_2Parser<T_Point>::LoadChannelConfigFile(const std::string channel_config_path) {
   try {
     std::ifstream fin(channel_config_path, std::ios::in);
     if (fin.is_open()) {
