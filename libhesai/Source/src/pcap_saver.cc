@@ -140,7 +140,7 @@ void PcapSaver::Dump(const uint8_t* data, uint32_t len, uint16_t port) {
 void PcapSaver::TcpDump(const uint8_t* data, uint32_t data_len, uint32_t max_pkt_len, uint16_t port) {
     dumping_blocked_ = true;
     using namespace std::chrono_literals;
-    std::this_thread::sleep_for(100ms); // delay to make sure Dump successful
+    std::this_thread::sleep_for(std::chrono::milliseconds(100)); // delay to make sure Dump successful
 
     using namespace std::chrono_literals;
     uint32_t remain_len = data_len;
