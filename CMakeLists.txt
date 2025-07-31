@@ -4,10 +4,10 @@ set(CMAKE_CXX_STANDARD 17)
 PROJECT(Template)
 
 set(WITH_PTCS_USE ON CACHE BOOL "Use Ptcs")
-set(FIND_CUDA ON CACHE BOOL "Find CUDA")  # Manuj : setting CUDA ON by default
+set(FIND_CUDA OFF CACHE BOOL "Find CUDA")  # Manuj : setting CUDA OFF by default
 
 if(FIND_CUDA)
-    find_package(CUDA )
+    find_package(CUDA)
 
 if(${CUDA_FOUND})
 
@@ -97,18 +97,18 @@ if(DISENABLE_TEST_CC)
 
 else()
 
-	add_executable(sample
+	add_executable(test_hesai_lidar_app
 		test/test.cc
 	)
-	target_link_libraries(sample
+	target_link_libraries(test_hesai_lidar_app
 		hesai_sdk_lib
 	)
 
-	add_executable(multi_test
-		test/multi_test.cc
-	)
-	target_link_libraries(multi_test
-		hesai_sdk_lib
-	)
+	# add_executable(multi_test
+	# 	test/multi_test.cc
+	# )
+	# target_link_libraries(multi_test
+	# 	hesai_sdk_lib
+	# )
 
 endif()
