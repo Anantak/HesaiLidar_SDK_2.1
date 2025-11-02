@@ -75,8 +75,8 @@ add_library(hesai_sdk_lib
 )
 target_link_libraries(hesai_sdk_lib PUBLIC 
 	lidar_lib
-${OTHER_LIB})
-
+	${OTHER_LIB}
+)
 set_target_properties(hesai_sdk_lib 
 	PROPERTIES CXX_STANDARD_REQUIRED TRUE CXX_STANDARD 17
 )

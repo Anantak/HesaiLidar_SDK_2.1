@@ -36,7 +36,7 @@ endif()
 set(DISENABLE_TEST_CC ON CACHE BOOL "not build test")
 
 include_directories("${PROJECT_BINARY_DIR}")
-add_subdirectory(../ Hesai_lidar_sdk)
+add_subdirectory(../Hesai_lidar_sdk)
 
 
 add_executable(packet_loss_tool

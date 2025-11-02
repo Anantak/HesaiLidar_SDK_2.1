@@ -125,7 +125,7 @@ void UdpParserGpu<T_Point>::SetLidarType(std::string lidar_type, uint16_t maxPac
     m_generalParserGpu = new Udp7_2ParserGpu<T_Point>(maxPacket, maxPoint);
   }
   else {
-    LogFatal("GPU does not support this type of lidar");
+    LogFatal("GPU does not support this type of lidar : %s", lidar_type.c_str());
   }
 }
 
