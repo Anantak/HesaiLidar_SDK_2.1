@@ -374,6 +374,7 @@ int Udp1_4Parser<T_Point>::DecodePacket(LidarDecodedFrame<T_Point> &frame, const
       reinterpret_cast<const HS_LIDAR_HEADER_ME_V4 *>(
           udpPacket.buffer + sizeof(HS_LIDAR_PRE_HEADER));
   int unitSize = pHeader->unitSize();
+
   if(hasFunctionSafety(pHeader->m_u8Status)) {
     const auto *function_savety_ptr = reinterpret_cast<const HS_LIDAR_FUNC_SAFETY_ME_V4 *>(
       (const unsigned char *)pHeader + sizeof(HS_LIDAR_HEADER_ME_V4) +
@@ -397,6 +398,7 @@ int Udp1_4Parser<T_Point>::DecodePacket(LidarDecodedFrame<T_Point> &frame, const
       (sizeof(HS_LIDAR_BODY_AZIMUTH_ME_V4) + unitSize * pHeader->GetLaserNum()) *
       pHeader->GetBlockNum() + sizeof(HS_LIDAR_BODY_CRC_ME_V4) +
       (hasFunctionSafety(pHeader->m_u8Status) ? sizeof(HS_LIDAR_FUNC_SAFETY_ME_V4) : 0));
+
   if (hasSeqNum(pHeader->m_u8Status)) {
     const HS_LIDAR_TAIL_SEQ_NUM_ME_V4 *pTailSeqNum =
         reinterpret_cast<const HS_LIDAR_TAIL_SEQ_NUM_ME_V4 *>(
@@ -409,6 +411,7 @@ int Udp1_4Parser<T_Point>::DecodePacket(LidarDecodedFrame<T_Point> &frame, const
     this->CalPktLoss(pTailSeqNum->GetSeqNum(), frame.fParam);
   }
   this->CalPktTimeLoss(pTail->GetMicroLidarTimeU64(this->last_utc_time), frame.fParam);
+  
   const HS_LIDAR_TAIL_IMU_ME_V4 *pTailImu = 
     reinterpret_cast<const HS_LIDAR_TAIL_IMU_ME_V4 *>(
           (const unsigned char *)pTail + sizeof(HS_LIDAR_TAIL_ME_V4) + 
@@ -517,5 +520,4 @@ int Udp1_4Parser<T_Point>::DecodePacket(LidarDecodedFrame<T_Point> &frame, const
   frame.packet_num++;
   return 0;
 }
-
 

@@ -34,6 +34,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "udp_p40_parser.h"
 #include "udp_p64_parser.h"
 #include "udp1_4_parser.h"
+#include "udp1_4_parser_20.h"
 #include "udp1_8_parser.h"
 #include "udp3_1_parser.h"
 #include "udp3_2_parser.h"

@@ -36,6 +36,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define Lidar_H
 #include <time.h>
 #include "lidar_types.h"
+#include "lidar_types_20.h"
 #include "ptc_client.h"
 #include "tcp_client.h"
 #include "udp_parser.h"
@@ -148,6 +149,11 @@ public:
   LidarDecodedFrame<T_Point> frame_;
   u8Array_t correction_string_;
   BlockingRing<UdpPacket, kPacketBufferSize> origin_packets_buffer_;
+
+  // JT128 modifications
+  hesai20::lidar::LidarDecodedFrame<T_Point> frame20_;
+  std::shared_ptr<hesai20::lidar::Udp1_4Parser<T_Point>> udp1_4parser20_;
+
 
 private:
   bool init_finish_[TotalStatus];           // 0: 基本初始化完成， 1：ptc初始化完成， 2：角度校准文件加载完成， 3：全部初始化完成

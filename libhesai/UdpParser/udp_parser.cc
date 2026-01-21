@@ -333,6 +333,8 @@ void UdpParser<T_Point>::CreatGeneralParser(const std::string& lidar_type) {
     parser_ = new Udp7_2Parser<T_Point>();
     lidar_type_decoded_ = "PandarFT120";
   }
+
+  LogInfo("Created GeneralParser for lidar_type : %s", lidar_type_decoded_.c_str());
 }
 
 template<typename T_Point>

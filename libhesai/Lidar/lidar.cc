@@ -264,7 +264,7 @@ int Lidar<T_Point>::Init(const DriverParam& param) {
       break;
     case DATA_FROM_SERIAL:
       if (LoadCorrectionForSerialParser(param.input_param.correction_save_path) != 0) {
-        LogError("---Failed to obtain correction file from lidar!---");
+        LogError("---Failed to obtain correction file from serial lidar!---");
         LoadCorrectionFile(param.input_param.correction_file_path);
       }
       break;
