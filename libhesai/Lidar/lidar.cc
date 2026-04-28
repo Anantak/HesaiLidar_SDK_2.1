@@ -532,6 +532,17 @@ void Lidar<T_Point>::LoadFiretimesFile(const std::string& firetimes_path) {
 }
 
 template <typename T_Point>
+int Lidar<T_Point>::LoadFiretimesString(const char *firetimes_string, int len) {
+  int ret = -1;
+  if (udp_parser_) {
+    return udp_parser_->LoadFiretimesString(firetimes_string, len);
+  } else
+    LogError("udp_parser_ nullptr");
+
+  return ret;
+}
+
+template <typename T_Point>
 void Lidar<T_Point>::ReceiveUdpThread() {
   if(!udp_thread_running_) return;
   // uint32_t u32StartTime = GetMicroTickCount();

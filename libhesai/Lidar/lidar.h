@@ -129,8 +129,10 @@ public:
   // get lidar correction file from local file,and pass to udp parser 
   void LoadCorrectionFile(const std::string& correction_path); 
   int LoadCorrectionString(const char *correction_string, int len);
-  // get lidar firetime correction file from local file,and pass to udp parser     
+  // get lidar firetime correction file from local file,and pass to udp parser
   void LoadFiretimesFile(const std::string& firetimes_path);
+  // load firetime correction from in-memory CSV buffer, and pass to udp parser
+  int LoadFiretimesString(const char *firetimes_string, int len);
   // set the parser thread number
   void SetThreadNum(int thread_num);
   void ClearPacketBuffer();

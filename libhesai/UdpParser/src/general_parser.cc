@@ -180,41 +180,28 @@ int GeneralParser<T_Point>::LoadCorrectionString(const char *correction_string, 
 template <typename T_Point>
 void GeneralParser<T_Point>::LoadFiretimesFile(const std::string& firetimes_path) {
   try {
-    std::ifstream inFile(firetimes_path, std::ios::in);
-    if (inFile.is_open()) {
-      std::string lineStr;
-      //skip first line
-      std::getline(inFile, lineStr); 
-      int lineCount = 0;
-      while (getline(inFile, lineStr)) {
-        std::vector<std::string> vLineSplit;
-        split_string(vLineSplit, lineStr, ',');
-        // skip error line or hash value line
-        if (vLineSplit.size() != 2) {  
-          continue;
-        } else {
-          lineCount++;
-        }
-        float deltTime = 0.f;
-        int laserId = 0;
-        laserId = std::stoi(vLineSplit[0]);
-        deltTime = std::stof(vLineSplit[1]);
-        if (laserId > DEFAULT_MAX_LASER_NUM || laserId <= 0) {
-          throw std::invalid_argument("laser id is wrong in firetimes file. laser Id: "   
-                                      + std::to_string(laserId) + ", line: " + std::to_string(lineCount));
-        }
-        firetime_correction_[laserId - 1] = deltTime;
+    std::ifstream fin(firetimes_path, std::ios::in);
+    if (fin.is_open()) {
+      int length = 0;
+      fin.seekg(0, std::ios::end);
+      length = static_cast<int>(fin.tellg());
+      fin.seekg(0, std::ios::beg);
+      char *buffer = new char[length];
+      fin.read(buffer, length);
+      fin.close();
+      int ret = LoadFiretimesString(buffer, length);
+      delete[] buffer;
+      if (ret != 0) {
+        LogError("Parse local firetime file Error");
+      } else {
+        LogInfo("Parser firetime file success!");
       }
-      this->loadFiretimeSuccess();
-      LogInfo("Open firetime file success!");
-      inFile.close();
-      return;
     } else {
-      throw std::invalid_argument("Open firetime file failed");
+      LogError("Open firetime file failed");
+      return;
     }
-  } catch (const std::exception &e) {
-    LogFatal("load firetime error: %s", e.what());
-    this->get_firetime_file_ = false;
+  } catch (const std::exception& e) {
+    LogFatal("error loading firetime file: %s", e.what());
     return;
   }
 }
@@ -253,8 +240,38 @@ void GeneralParser<T_Point>::CircleRevise(int &angle) {
 
 template <typename T_Point>
 int GeneralParser<T_Point>::LoadFiretimesString(const char *firetimes_string, int len) {
-  (void)firetimes_string;
-  LogWarning("don't load firetimes string");
+  try {
+    std::string firetimes_content_str(firetimes_string, len);
+    std::istringstream ifs(firetimes_content_str);
+    std::string lineStr;
+    // skip first line (header)
+    std::getline(ifs, lineStr);
+    int lineCount = 0;
+    while (std::getline(ifs, lineStr)) {
+      std::vector<std::string> vLineSplit;
+      split_string(vLineSplit, lineStr, ',');
+      // skip error line or hash value line
+      if (vLineSplit.size() != 2) {
+        continue;
+      } else {
+        lineCount++;
+      }
+      float deltTime = 0.f;
+      int laserId = 0;
+      laserId = std::stoi(vLineSplit[0]);
+      deltTime = std::stof(vLineSplit[1]);
+      if (laserId > DEFAULT_MAX_LASER_NUM || laserId <= 0) {
+        throw std::invalid_argument("laser id is wrong in firetimes file. laser Id: "
+                                    + std::to_string(laserId) + ", line: " + std::to_string(lineCount));
+      }
+      firetime_correction_[laserId - 1] = deltTime;
+    }
+    this->loadFiretimeSuccess();
+  } catch (const std::exception &e) {
+    LogFatal("load firetime error: %s", e.what());
+    this->get_firetime_file_ = false;
+    return -1;
+  }
   return 0;
 }
 
