@@ -145,6 +145,7 @@ struct LidarImuData {
   double imu_ang_vel_x;
   double imu_ang_vel_y;
   double imu_ang_vel_z;
+  double imu_temperature;   // ODR: must match HesaiLidar_SDK_2.0_JT128/libhesai20/lidar_types.h (same include guard)
 
   LidarImuData() {
     timestamp = 0;
@@ -154,6 +155,20 @@ struct LidarImuData {
     imu_ang_vel_x = -1;
     imu_ang_vel_y = -1;
     imu_ang_vel_z = -1;
+    imu_temperature = -1;
+  }
+  bool isSameAccelValue(const LidarImuData& other) const {
+    return imu_accel_x == other.imu_accel_x &&
+           imu_accel_y == other.imu_accel_y &&
+           imu_accel_z == other.imu_accel_z;
+  }
+  bool isSameAngVelValue(const LidarImuData& other) const {
+    return imu_ang_vel_x == other.imu_ang_vel_x &&
+           imu_ang_vel_y == other.imu_ang_vel_y &&
+           imu_ang_vel_z == other.imu_ang_vel_z;
+  }
+  bool isSameTemperatureValue(const LidarImuData& other) const {
+    return imu_temperature == other.imu_temperature;
   }
   bool isSameImuValue(const LidarImuData& other) const {
     return imu_accel_x == other.imu_accel_x &&
@@ -228,6 +243,7 @@ struct FrameDecodeParam {
   bool enable_packet_timeloss_tool_;
   bool packet_timeloss_tool_continue_;
   bool use_cuda;
+  bool neglect_scan_completion = false;   // ODR: must match the JT128 SDK copy
   FrameDecodeParam() {
     use_timestamp_type = 0;
     pcap_time_synchronization = false;
@@ -240,6 +256,7 @@ struct FrameDecodeParam {
     packet_timeloss_tool_continue_ = false;
     use_cuda = false;
     update_imu_flag = true;
+    neglect_scan_completion = false;
   }
   void UpdateRotation(int rotation) {
     if (abs(rotation_flag) == 10240) return;
@@ -254,6 +271,9 @@ struct FrameDecodeParam {
     config.fov_end = param.decoder_param.fov_end;
     transform = param.decoder_param.transform_param;
     use_cuda = param.use_gpu;
+  }
+  void SetNeglectScanCompletion(bool v) {
+    neglect_scan_completion = v;
   }
 };
 #pragma pack(pop)
@@ -316,6 +336,9 @@ class LidarDecodedFrame
         per_points_num = 0;
         scan_complete = false;
         frame_index++;
+        // Manuj additions to clear out the data buffers
+        memset(jt128_buffer, 0, sizeof(JT128buffer) * maxPacketsPerFrame);
+        memset(sensor_timestamp, 0, sizeof(uint64_t) * maxPacketsPerFrame);
     }
     uint32_t getPointSize() {
       return sizeof(PointT);
